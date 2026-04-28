@@ -1,56 +1,25 @@
-# 내가 전생에 조선인이었다니
+# My Past Life in Joseon
 
-조선시대 분위기를 바탕으로 만든 모바일 우선 한국어 성향 테스트 웹서비스입니다. 12개 질문에 답하면 전생 캐릭터 결과를 확인할 수 있으며, 소개/결과 유형/읽을거리/정책/문의 페이지를 함께 제공하는 정적 콘텐츠 사이트 형태로 구성되어 있습니다.
+Bilingual (English default + Korean toggle) static personality test inspired by Joseon-era atmosphere.
 
-## 서비스 소개
+## Highlights
+- 12-question test with deterministic result generation.
+- Personalized outputs built from archetype + composable details.
+- Joseon-style name generator (EN/KO pair output).
+- LocalStorage persistence for language and last result.
+- Static multi-page site (Vercel-friendly, no server/DB).
 
-- 핵심 기능: 12문항 조선시대 전생 성향 테스트
-- 부가 콘텐츠: 소개, 결과 유형 모아보기, 조선시대 읽을거리, 개인정보처리방침, 문의
-- 기술 구성: HTML + CSS + JavaScript (외부 API/DB 없음)
-- 배포 환경: Vercel 정적 배포
+## Pages
+- `/index.html`: test + result + card save/share
+- `/history.html`: Joseon stories (EN/KR)
+- `/about.html`: service explanation (EN/KR)
+- `/privacy.html`: privacy policy (EN/KR)
+- `/contact.html`: contact (EN/KR)
 
-## Vercel 배포 방법
+## Data edit points
+- UI/page text and translations: `i18n.js`
+- Quiz questions, archetypes, pools, and name parts: `script.js`
+- Styling/theme: `style.css`
 
-1. 저장소를 GitHub에 푸시합니다.
-2. [Vercel](https://vercel.com)에서 `New Project`를 선택합니다.
-3. 해당 GitHub 저장소를 Import 합니다.
-4. 프레임워크 Preset은 `Other`(정적 사이트)로 둡니다.
-5. Build Command는 비워두고, Output Directory는 루트(`/`) 기준 정적 파일을 그대로 사용합니다.
-6. Deploy를 누르면 `.vercel.app` 도메인으로 배포됩니다.
-
-## 페이지 구조
-
-- `/index.html`: 테스트 시작/질문/결과
-- `/about.html`: 서비스 소개
-- `/results.html`: 12개 결과 유형 카드
-- `/history.html`: 조선시대 이야기 콘텐츠
-- `/privacy.html`: 개인정보처리방침
-- `/contact.html`: 문의 안내
-- `/robots.txt`: 검색엔진 수집 허용
-- `/sitemap.xml`: 정적 사이트맵
-
-## 질문/결과 데이터 수정 위치
-
-- 질문 데이터: `script.js`의 `QUESTIONS` 상수
-- 테스트 결과 데이터: `script.js`의 `RESULTS` 상수
-
-## 개인정보처리방침의 이메일 수정 위치
-
-- 문의 이메일 문구 수정: `contact.html`의 `문의 이메일` 줄
-- TODO 주석(`실제 문의 이메일로 변경`) 위치에서 값만 바꿔도 바로 반영됩니다.
-
-## AdSense 신청 전 확인할 체크리스트
-
-- [ ] 테스트가 정상 작동하는가?
-- [ ] 모든 메뉴 링크가 깨지지 않는가?
-- [ ] 개인정보처리방침 페이지가 있는가?
-- [ ] 문의 페이지가 있는가?
-- [ ] 소개 페이지가 있는가?
-- [ ] 결과 유형 페이지와 읽을거리 콘텐츠가 있는가?
-- [ ] 모바일에서 보기 좋은가?
-- [ ] Vercel 배포 후 실제 주소에서 모든 페이지가 열리는가?
-
-## 참고 메모
-
-- 광고 코드는 아직 삽입하지 않았으며, 페이지 내 `AdSense placeholder` 주석 위치를 기준으로 추후 추가할 수 있습니다.
-- `sitemap.xml`과 각 페이지의 `og:url`은 실제 배포 주소 확인 후 수정하세요.
+## Deploy (Vercel)
+Deploy as a static site (Framework preset: Other). No build step required.
