@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>내가 전생에 조선인이었다니</title>
+    <meta
+      name="description"
+      content="12문항 심리테스트로 알아보는 조선시대 전생 캐릭터. 모바일 중심의 감성 테스트 웹서비스"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Pretendard:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="paper-overlay"></div>
+
+    <main class="app" aria-live="polite">
+      <section id="start-screen" class="screen active">
+        <p class="badge">모바일 심리 테스트</p>
+        <h1>내가 전생에<br />조선인이었다니</h1>
+        <p class="lead">
+          12개의 질문에 답하면, 당신의 조선 전생 캐릭터와 마지막 장면을 알려드립니다.
+        </p>
+        <button id="start-btn" class="btn btn-primary">테스트 시작하기</button>
+      </section>
+
+      <section id="quiz-screen" class="screen" aria-hidden="true">
+        <div class="top-bar">
+          <p id="progress-text">1 / 12</p>
+          <div class="progress-track" aria-hidden="true">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <article class="question-card">
+          <h2 id="question-title"></h2>
+          <div id="answer-list" class="answer-list"></div>
+        </article>
+      </section>
+
+      <section id="result-screen" class="screen" aria-hidden="true">
+        <header class="result-header">
+          <p class="result-label">당신의 조선 전생</p>
+          <h2 id="result-title"></h2>
+          <p id="result-identity" class="result-identity"></p>
+        </header>
+
+        <div class="result-card">
+          <dl class="fact-grid">
+            <div>
+              <dt>시대</dt>
+              <dd id="result-era"></dd>
+            </div>
+            <div>
+              <dt>거주지</dt>
+              <dd id="result-place"></dd>
+            </div>
+            <div>
+              <dt>직업</dt>
+              <dd id="result-job"></dd>
+            </div>
+            <div>
+              <dt>성향 키워드</dt>
+              <dd id="result-keywords"></dd>
+            </div>
+          </dl>
+
+          <section class="stats">
+            <h3>능력치</h3>
+            <div id="stats-list" class="stats-list"></div>
+          </section>
+
+          <section>
+            <h3>전생 기록</h3>
+            <p id="result-description"></p>
+          </section>
+
+          <section class="last-scene">
+            <h3>전생의 마지막 장면</h3>
+            <p id="result-ending"></p>
+          </section>
+        </div>
+
+        <div class="result-actions">
+          <button id="retry-btn" class="btn btn-secondary">다시하기</button>
+          <button id="share-btn" class="btn btn-primary">결과 공유하기</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
