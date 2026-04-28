@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 배포 주소 확인 후 https://your-project-name.vercel.app 값을 실제 주소로 수정 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://your-project-name.vercel.app/</loc></url>
   <url><loc>https://your-project-name.vercel.app/about.html</loc></url>
-  <url><loc>https://your-project-name.vercel.app/results.html</loc></url>
   <url><loc>https://your-project-name.vercel.app/history.html</loc></url>
   <url><loc>https://your-project-name.vercel.app/privacy.html</loc></url>
   <url><loc>https://your-project-name.vercel.app/contact.html</loc></url>

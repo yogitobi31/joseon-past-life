@@ -1,406 +1,272 @@
-const QUESTIONS = [
-  {
-    question: "새로운 동네에 도착했다. 가장 먼저 하는 일은?",
-    answers: [
-      { text: "시장부터 훑어보고 흐름을 파악한다.", types: ["merchant", "craftsman"] },
-      { text: "사람들 성정부터 살핀 뒤 말문을 연다.", types: ["scholar", "shaman"] },
-      { text: "주변 지형을 익히며 안전한 동선을 먼저 만든다.", types: ["guard", "hunter"] },
-    ],
-  },
-  {
-    question: "아침 루틴에서 가장 중요한 것은?",
-    answers: [
-      { text: "기록 정리와 계획 세우기", types: ["clerk", "scholar"] },
-      { text: "몸을 단련하며 감각 깨우기", types: ["guard", "hunter"] },
-      { text: "차 한 잔으로 마음을 고요히 하기", types: ["painter", "monk"] },
-    ],
-  },
-  {
-    question: "팀 과제가 생겼을 때 내 역할은?",
-    answers: [
-      { text: "판을 짜고 마감까지 밀어붙인다.", types: ["commander", "clerk"] },
-      { text: "갈등을 조정하고 분위기를 다독인다.", types: ["physician", "shaman"] },
-      { text: "손이 많이 가는 실무를 묵묵히 맡는다.", types: ["craftsman", "farmer"] },
-    ],
-  },
-  {
-    question: "가장 끌리는 장소는 어디인가?",
-    answers: [
-      { text: "책 냄새가 도는 조용한 서고", types: ["scholar", "clerk"] },
-      { text: "사람 소리 가득한 장터와 골목", types: ["merchant", "storyteller"] },
-      { text: "바람 소리만 들리는 산과 숲", types: ["hunter", "monk"] },
-    ],
-  },
-  {
-    question: "예상 밖의 실패를 겪으면?",
-    answers: [
-      { text: "원인을 분석하고 다시 설계한다.", types: ["clerk", "scholar"] },
-      { text: "즉시 현장 대응으로 피해를 줄인다.", types: ["guard", "commander"] },
-      { text: "감정을 추슬러 주변 사람부터 챙긴다.", types: ["physician", "farmer"] },
-    ],
-  },
-  {
-    question: "주변에서 자주 듣는 말은?",
-    answers: [
-      { text: "네가 있으면 이상하게 마음이 놓여.", types: ["physician", "monk"] },
-      { text: "어떻게 그런 아이디어를 내?", types: ["painter", "storyteller"] },
-      { text: "진짜 실행력은 너를 못 이긴다.", types: ["commander", "merchant"] },
-    ],
-  },
-  {
-    question: "휴식이 필요할 때 택하는 방식은?",
-    answers: [
-      { text: "사람들과 어울리며 에너지를 얻는다.", types: ["merchant", "storyteller"] },
-      { text: "혼자 손으로 무언가를 만든다.", types: ["craftsman", "painter"] },
-      { text: "자연 속을 걸으며 생각을 정리한다.", types: ["hunter", "monk"] },
-    ],
-  },
-  {
-    question: "소중한 것을 지키기 위해 필요한 것은?",
-    answers: [
-      { text: "원칙과 기록, 냉정한 판단", types: ["clerk", "scholar"] },
-      { text: "담대한 결단과 행동", types: ["guard", "commander"] },
-      { text: "관계와 신뢰를 쌓는 시간", types: ["farmer", "physician"] },
-    ],
-  },
-  {
-    question: "내가 가장 자신 있는 재능은?",
-    answers: [
-      { text: "말과 글로 마음을 움직이는 힘", types: ["storyteller", "scholar"] },
-      { text: "손끝 감각으로 완성도를 높이는 힘", types: ["craftsman", "painter"] },
-      { text: "상황을 읽고 기회를 잡는 힘", types: ["merchant", "commander"] },
-    ],
-  },
-  {
-    question: "나를 화나게 하는 상황은?",
-    answers: [
-      { text: "약한 사람을 이용하는 모습", types: ["guard", "physician"] },
-      { text: "약속 없는 무책임과 뒷말", types: ["clerk", "farmer"] },
-      { text: "틀에 가둬 창의를 막는 분위기", types: ["painter", "storyteller"] },
-    ],
-  },
-  {
-    question: "중요한 선택 직전, 나는?",
-    answers: [
-      { text: "가능한 시나리오를 끝까지 계산한다.", types: ["scholar", "merchant"] },
-      { text: "마음이 가는 쪽을 빠르게 붙잡는다.", types: ["commander", "hunter"] },
-      { text: "주변의 기운과 흐름을 천천히 느낀다.", types: ["shaman", "monk"] },
-    ],
-  },
-  {
-    question: "당신이 남기고 싶은 한 줄은?",
-    answers: [
-      { text: "나는 시대를 기록하고 다음 길을 비췄다.", types: ["clerk", "scholar"] },
-      { text: "나는 사람의 삶을 직접 바꾸어냈다.", types: ["physician", "commander"] },
-      { text: "나는 감정과 기억을 이야기로 남겼다.", types: ["storyteller", "painter"] },
-    ],
-  },
-];
-
-const RESULTS = {
-  scholar: {
-    title: "규장각의 별빛 서고지기",
-    pastName: "이도윤",
-    era: "정조 연간(18세기 후반)",
-    place: "한성부 창덕궁 인근",
-    job: "규장각 검서관",
-    keywords: "분석, 통찰, 성실, 절제",
-    stats: { 지략: 96, 공감: 63, 추진력: 71, 예술감각: 58, 생존력: 52 },
-    description:
-      "당신은 밤이 깊을수록 더 또렷해지는 사람이었습니다. 시대의 어지러운 소문 속에서도 기록의 힘을 믿었고, 사소한 문장 하나에서 큰 흐름을 읽어냈죠. 사람들은 당신을 조용하다고 여겼지만, 사실 당신은 미래를 가장 멀리 보던 전략가였습니다.",
-    ending:
-      "차가운 새벽, 등잔불 아래 마지막 교정지를 덮던 당신. ‘다음 세대는 덜 흔들리길’이라는 메모가 책장 사이에 남았습니다.",
-  },
-  commander: {
-    title: "북방을 지킨 결단의 장수",
-    pastName: "최무강",
-    era: "숙종 연간(17세기 말)",
-    place: "함경도 경성진",
-    job: "변방 수군·육군 지휘관",
-    keywords: "결단, 책임, 카리스마, 담대함",
-    stats: { 지략: 78, 공감: 61, 추진력: 98, 예술감각: 34, 생존력: 92 },
-    description:
-      "당신은 망설임보다 책임을 먼저 선택하던 인물입니다. 위기 앞에서 흔들리지 않았고, 자신의 선택이 누군가의 일상을 지킨다는 사실을 누구보다 잘 알았습니다. 거친 성정으로 오해받아도 결국 당신 곁엔 신뢰가 모였습니다.",
-    ending:
-      "눈보라 속 봉수대, 끝까지 깃발을 내리지 않던 순간. 당신의 결단 덕분에 성문은 새벽까지 버텨냈습니다.",
-  },
-  physician: {
-    title: "골목의 맥을 짚는 심의",
-    pastName: "윤가온",
-    era: "영조 연간(18세기 중반)",
-    place: "한성부 종로",
-    job: "의원 겸 약재 조제인",
-    keywords: "치유, 배려, 관찰, 인내",
-    stats: { 지략: 74, 공감: 97, 추진력: 67, 예술감각: 48, 생존력: 73 },
-    description:
-      "당신은 사람의 말보다 맥박, 표정, 침묵을 먼저 읽었습니다. 누구도 주목하지 않던 작은 통증을 놓치지 않았고, 가장 약한 사람의 편에 서는 것을 당연한 일로 여겼죠. 당신이 지나간 자리엔 안도의 숨이 남았습니다.",
-    ending:
-      "장마 끝 습한 밤, 마지막 탕약을 내어주며 미소 짓던 당신. ‘내일은 분명 조금 나아질 것’이라는 말이 골목에 오래 남았습니다.",
-  },
-  merchant: {
-    title: "한양 장시의 판을 읽는 거상",
-    pastName: "강서율",
-    era: "순조 연간(19세기 초)",
-    place: "한성부 육의전 거리",
-    job: "포목전 상인",
-    keywords: "기민함, 협상, 감각, 실리",
-    stats: { 지략: 85, 공감: 69, 추진력: 91, 예술감각: 57, 생존력: 84 },
-    description:
-      "당신은 숫자와 사람의 마음을 동시에 읽어내는 재능이 있었습니다. 손익 계산은 냉정했지만, 중요한 순간에는 의리를 택할 줄 알았죠. 덕분에 당신의 이름은 거래처를 넘어 동네 신뢰의 기준이 되었습니다.",
-    ending:
-      "해 질 녘 가게 문을 닫으며 오늘 장부를 덮던 손끝. 마지막 줄엔 ‘사람이 남는 장사’라는 문장이 적혀 있었습니다.",
-  },
-  painter: {
-    title: "먹빛으로 계절을 붙잡은 화원",
-    pastName: "신하린",
-    era: "헌종 연간(19세기 중반)",
-    place: "도화서 인근 화방",
-    job: "도화서 화원",
-    keywords: "감수성, 창의, 집중, 섬세함",
-    stats: { 지략: 68, 공감: 83, 추진력: 58, 예술감각: 99, 생존력: 49 },
-    description:
-      "당신은 말을 아껴도 화면 위에서는 누구보다 선명했습니다. 한 번 스친 빛, 한 사람의 표정, 비 오는 처마 끝의 떨림까지 기억해 냈죠. 세상은 당신의 그림을 통해 자기 마음을 다시 들여다보았습니다.",
-    ending:
-      "봄비 내리던 날, 마른 붓 끝으로 마지막 점을 찍은 뒤 당신은 창밖 매화를 오래 바라보았습니다.",
-  },
-  shaman: {
-    title: "달빛 굿판의 길잡이 무녀",
-    pastName: "해온",
-    era: "인조 연간(17세기 초)",
-    place: "경기도 광주 산자락",
-    job: "마을 무녀",
-    keywords: "직관, 위로, 신비, 연결",
-    stats: { 지략: 62, 공감: 94, 추진력: 65, 예술감각: 81, 생존력: 64 },
-    description:
-      "당신은 설명하기 어려운 기류를 누구보다 빨리 느끼는 사람이었습니다. 불안한 마음이 모이는 곳에서 중심을 잡아주었고, 공동체가 다시 숨 쉬게 만드는 의식을 이끌었죠. 당신의 언어는 늘 사람을 살리는 쪽이었습니다.",
-    ending:
-      "보름달 아래 북소리가 멎고, 마지막 향 연기가 하늘로 오르던 순간. 사람들의 표정이 처음으로 평온해졌습니다.",
-  },
-  hunter: {
-    title: "산길을 읽는 고요한 포수",
-    pastName: "박연우",
-    era: "광해군 연간(17세기 초)",
-    place: "강원도 산간 마을",
-    job: "포수 겸 산림 길잡이",
-    keywords: "집중, 민첩, 침착, 독립",
-    stats: { 지략: 73, 공감: 56, 추진력: 82, 예술감각: 42, 생존력: 97 },
-    description:
-      "당신은 소란보다 정적 속에서 빛났습니다. 발자국의 깊이, 바람의 방향, 새의 움직임 같은 작은 단서를 조합해 누구도 보지 못한 길을 찾아냈죠. 필요할 때 한 번에 움직이는 타입, 바로 당신입니다.",
-    ending:
-      "안개 낀 능선 위, 동료들을 먼저 내려보낸 뒤 마지막으로 산길을 정리하던 발걸음이 천천히 사라졌습니다.",
-  },
-  monk: {
-    title: "산사의 새벽종을 울리던 수행자",
-    pastName: "청명",
-    era: "세조 연간(15세기 중반)",
-    place: "지리산 자락 산사",
-    job: "승려 겸 서책 필사자",
-    keywords: "평정, 성찰, 절제, 자비",
-    stats: { 지략: 79, 공감: 88, 추진력: 45, 예술감각: 67, 생존력: 70 },
-    description:
-      "당신은 빠른 답보다 깊은 질문을 택하는 사람이었습니다. 눈앞의 이익보다 긴 호흡을 믿었고, 분주한 사람들에게 잠시 멈추는 법을 알려주었죠. 당신 곁에 있으면 이상하게도 마음이 정돈되었습니다.",
-    ending:
-      "동트기 전 범종을 세 번 울린 뒤, 새로 필사한 경전을 조심히 말아 올리던 손길. 고요가 산사를 채웠습니다.",
-  },
-  craftsman: {
-    title: "불꽃을 다루는 장인의 손",
-    pastName: "오진혁",
-    era: "중종 연간(16세기 초)",
-    place: "전주 공방 거리",
-    job: "금속 공예 장인",
-    keywords: "집요함, 완성도, 실용, 근성",
-    stats: { 지략: 71, 공감: 58, 추진력: 80, 예술감각: 76, 생존력: 79 },
-    description:
-      "당신은 결과물로 말하는 사람이었습니다. 수십 번의 실패를 견디며 끝내 균형을 맞췄고, 보이지 않는 부분까지 정직하게 완성했죠. 당신의 작품은 오래 쓰일수록 진가가 드러났습니다.",
-    ending:
-      "가마의 열기가 사그라들 무렵, 마지막 칼집 문양을 다듬던 순간. 당신은 만족스러운 숨을 길게 내쉬었습니다.",
-  },
-  storyteller: {
-    title: "달밤 마당의 이야기꾼",
-    pastName: "남도하",
-    era: "철종 연간(19세기 중반)",
-    place: "평안도 장터 마당",
-    job: "전기수(이야기 낭독가)",
-    keywords: "표현력, 유머, 공감, 매력",
-    stats: { 지략: 77, 공감: 86, 추진력: 72, 예술감각: 88, 생존력: 60 },
-    description:
-      "당신은 이야기로 사람의 하루를 바꾸는 재능이 있었습니다. 웃게 만들고, 울게 만들고, 다시 일어나게 하는 문장을 알았죠. 당신이 입을 열면 낯선 이들도 어느새 같은 장면을 바라보았습니다.",
-    ending:
-      "초여름 밤, 마지막 대목을 마친 뒤 조용히 부채를 접은 당신. 박수 소리 사이로 누군가의 훌쩍임이 들렸습니다.",
-  },
-  guard: {
-    title: "도성을 누빈 그림자 포도군관",
-    pastName: "한유건",
-    era: "성종 연간(15세기 후반)",
-    place: "한성부 포도청",
-    job: "포도군관",
-    keywords: "정의감, 신속함, 냉정, 충성",
-    stats: { 지략: 75, 공감: 60, 추진력: 93, 예술감각: 31, 생존력: 88 },
-    description:
-      "당신은 위급한 순간에 가장 먼저 움직이는 사람이었습니다. 원칙은 단단했고 행동은 빨랐죠. 모두가 한발 물러설 때도 당신은 책임의 선을 넘지 않았고, 그래서 사람들은 당신을 마지막 안전장치로 여겼습니다.",
-    ending:
-      "한밤중 골목 추격 끝, 새벽 종이 울리자 당신은 칼집을 닫고 조용히 하늘을 올려다보았습니다.",
-  },
-  farmer: {
-    title: "계절을 키운 들녘의 버팀목",
-    pastName: "김다온",
-    era: "세종 연간(15세기 전반)",
-    place: "충청도 평야 마을",
-    job: "대농 겸 향약 운영자",
-    keywords: "근면, 협력, 책임감, 꾸준함",
-    stats: { 지략: 69, 공감: 82, 추진력: 74, 예술감각: 40, 생존력: 90 },
-    description:
-      "당신은 느리지만 확실하게 공동체를 지탱하는 사람이었습니다. 풍년과 흉년을 모두 겪으며 포기보다 대비를 택했고, 내 몫보다 우리 몫을 먼저 계산했죠. 당신 덕분에 마을은 여러 번의 위기를 견뎠습니다.",
-    ending:
-      "가을 볕 아래 마지막 볏단을 세워두고, 들판 끝에서 한참을 바라보던 눈빛. 안도와 다음 계절의 다짐이 함께 있었습니다.",
-  },
+const QUESTIONS = {
+  en: [
+    { q: "You find yourself in an unfamiliar city. What do you do first?", a: ["Observe the streets quietly.", "Ask someone for directions.", "Follow the most interesting sound.", "Look for a place where people gather."] },
+    { q: "A friend asks for urgent help. You usually…", a: ["Make a quick plan.", "Show up first, think later.", "Calm them down and listen.", "Find who else should join."] },
+    { q: "In team projects, people know you as the one who…", a: ["Keeps structure and deadlines.", "Pushes action when others hesitate.", "Finds creative alternatives.", "Connects people and mood."] },
+    { q: "When you fail unexpectedly, your first reaction is…", a: ["Review what went wrong.", "Try again immediately.", "Take a short reset walk.", "Talk it through with someone."] },
+    { q: "Which environment gives you the most energy?", a: ["A quiet library.", "A lively market.", "A mountain trail.", "A studio or workshop."] },
+    { q: "What kind of praise feels most meaningful?", a: ["You are thoughtful.", "You are brave.", "You are warm.", "You are original."] },
+    { q: "When conflict happens, you tend to…", a: ["Analyze both sides.", "Step in directly.", "Ease tension first.", "Reframe the story."] },
+    { q: "What do you protect most?", a: ["Principles.", "People.", "Possibility.", "Reputation."] },
+    { q: "Your hidden strength is closest to…", a: ["Pattern recognition.", "Timing under pressure.", "Emotional intuition.", "Narrative sense."] },
+    { q: "Which risk scares you most?", a: ["Being misunderstood.", "Losing control.", "Hurting people you care about.", "Living without impact."] },
+    { q: "How do you make major decisions?", a: ["Collect evidence.", "Trust instinct.", "Read the room.", "Imagine long-term ripple effects."] },
+    { q: "What legacy do you want to leave?", a: ["A system that lasts.", "A crisis survived.", "People healed.", "A story remembered."] },
+  ],
+  ko: [
+    { q: "낯선 도시에 혼자 도착했다. 당신이 가장 먼저 할 일은?", a: ["조용히 거리를 관찰한다.", "사람들에게 길을 묻는다.", "가장 흥미로운 소리가 나는 곳으로 간다.", "사람들이 모여 있는 곳을 찾는다."] },
+    { q: "친구가 급하게 도움을 요청했다. 보통 당신은…", a: ["빠르게 계획을 세운다.", "일단 달려가고 나중에 생각한다.", "먼저 진정시키고 이야기를 듣는다.", "함께할 사람을 연결한다."] },
+    { q: "팀 프로젝트에서 당신은 주로…", a: ["구조와 마감을 챙긴다.", "머뭇거릴 때 실행을 밀어준다.", "창의적인 대안을 만든다.", "사람과 분위기를 잇는다."] },
+    { q: "예상치 못한 실패를 겪으면 첫 반응은?", a: ["원인을 분석한다.", "즉시 다시 시도한다.", "짧게 정리할 시간을 갖는다.", "누군가와 대화하며 정리한다."] },
+    { q: "어떤 공간에서 가장 에너지가 생기나?", a: ["조용한 서고.", "활기찬 장터.", "산길과 자연.", "공방·작업실."] },
+    { q: "어떤 칭찬이 가장 기분 좋은가?", a: ["신중하고 깊다.", "대담하고 용감하다.", "따뜻하고 배려 깊다.", "독창적이고 감각적이다."] },
+    { q: "갈등이 생기면 당신은…", a: ["양쪽 논리를 분석한다.", "직접 개입한다.", "긴장을 먼저 낮춘다.", "이야기의 틀을 바꾼다."] },
+    { q: "당신이 가장 지키고 싶은 것은?", a: ["원칙.", "사람.", "가능성.", "명예."] },
+    { q: "숨겨진 강점에 가장 가까운 것은?", a: ["패턴을 읽는 힘.", "압박 속 타이밍.", "감정 직관.", "스토리 감각."] },
+    { q: "당신이 가장 두려운 위험은?", a: ["오해받는 것.", "통제력을 잃는 것.", "소중한 사람을 다치게 하는 것.", "의미 없이 사는 것."] },
+    { q: "중대한 결정을 내릴 때 당신은…", a: ["증거를 모은다.", "직감을 믿는다.", "분위기와 맥락을 읽는다.", "장기적 파급을 본다."] },
+    { q: "남기고 싶은 유산은?", a: ["오래 가는 시스템.", "위기에서 지켜낸 결과.", "치유된 사람들.", "오래 기억될 이야기."] },
+  ],
 };
 
-const RESULT_KEYS = Object.keys(RESULTS);
-const scores = Object.fromEntries(RESULT_KEYS.map((key) => [key, 0]));
+const ARCHETYPES = [
+  { en: "The Fallen Noble Strategist", ko: "몰락한 양반가의 책사", roleEn: "Political strategist", roleKo: "전략가" },
+  { en: "The Wandering Scholar of Hanyang", ko: "한양을 떠도는 괴짜 선비", roleEn: "Scholar", roleKo: "선비" },
+  { en: "The Royal Archivist Who Knew Too Much", ko: "왕의 비밀을 아는 궁중 기록관", roleEn: "Archivist", roleKo: "기록관" },
+  { en: "The Joseon Warrior Who Walked Through Fire", ko: "불길을 건넌 조선 무관", roleEn: "Warrior", roleKo: "무관" },
+  { en: "The Merchant’s Daughter Who Feared No Sea", ko: "바다를 두려워하지 않은 상단의 딸", roleEn: "Merchant", roleKo: "상인" },
+  { en: "The Marketplace Storyteller", ko: "장터의 이야기꾼", roleEn: "Storyteller", roleKo: "이야기꾼" },
+  { en: "The Mountain Herbalist", ko: "산속 약초꾼", roleEn: "Herbalist", roleKo: "약초꾼" },
+  { en: "The Court Painter of Forgotten Faces", ko: "잊힌 얼굴을 그린 궁중 화원", roleEn: "Court painter", roleKo: "화원" },
+  { en: "The Palace Woman Who Wrote Letters at Night", ko: "밤마다 편지를 쓰던 궁녀", roleEn: "Palace writer", roleKo: "궁중 서기" },
+  { en: "The Local Official Who Defied Powerful Families", ko: "세도가문에 맞선 지방 관리", roleEn: "Local official", roleKo: "향리" },
+  { en: "The Shaman Who Refused to Obey Fate", ko: "운명을 거스른 무녀", roleEn: "Shaman", roleKo: "무녀" },
+  { en: "The Nameless Hero of the People", ko: "이름 없는 백성의 영웅", roleEn: "Protector", roleKo: "민초 수호자" },
+];
 
-let currentIndex = 0;
+const POOLS = {
+  era: { en: ["Early Joseon", "Mid-Joseon", "Late Joseon", "A turbulent winter in Joseon", "The final years of a forgotten reign"], ko: ["조선 전기", "조선 중기", "조선 후기", "혼란스러운 겨울의 조선", "잊힌 왕조의 끝자락"] },
+  region: { en: ["Hanyang", "Gaeseong", "Jeonju", "Dongnae", "Gangneung", "a small village near the Han River", "a mountain village in Gangwon", "a port town in the south", "a quiet scholar’s town"], ko: ["한양", "개성", "전주", "동래", "강릉", "한강 근처의 작은 마을", "강원도의 산골 마을", "남쪽의 포구 마을", "조용한 선비의 고을"] },
+  object: { en: ["an ink-stained brush", "a folded letter", "a worn map", "a small jade ornament", "a medicine pouch", "a red seal", "a cracked compass", "a hand-copied book", "a silk ribbon", "a wooden hairpin", "a traveler’s straw hat", "an old bronze mirror"], ko: ["먹물 묻은 붓", "접힌 편지", "낡은 지도", "작은 옥 장식", "약초 주머니", "붉은 낙관", "금이 간 나침반", "손으로 베껴 쓴 책", "비단 리본", "나무 비녀", "나그네의 삿갓", "오래된 청동 거울"] },
+  talent: { en: ["reading hidden motives", "memorizing tiny details", "turning conflict into agreement", "finding opportunities in chaos"], ko: ["숨은 의도를 읽는 힘", "작은 디테일을 기억하는 힘", "갈등을 합의로 바꾸는 능력", "혼란 속 기회를 잡는 감각"] },
+  fear: { en: ["betraying your own values", "being forgotten by history", "failing to protect your people", "silence after speaking the truth"], ko: ["스스로의 가치를 배신하는 것", "역사에서 잊히는 것", "사람들을 지키지 못하는 것", "진실을 말한 뒤 찾아오는 침묵"] },
+};
 
-const startScreen = document.getElementById("start-screen");
-const quizScreen = document.getElementById("quiz-screen");
-const resultScreen = document.getElementById("result-screen");
+const SURNAMES = [{ en: "Kim", ko: "김" }, { en: "Lee", ko: "이" }, { en: "Park", ko: "박" }, { en: "Choi", ko: "최" }, { en: "Jung", ko: "정" }, { en: "Kang", ko: "강" }, { en: "Yoon", ko: "윤" }, { en: "Jang", ko: "장" }, { en: "Han", ko: "한" }, { en: "Lim", ko: "임" }, { en: "Seo", ko: "서" }, { en: "Song", ko: "송" }, { en: "Shin", ko: "신" }, { en: "Oh", ko: "오" }, { en: "Hong", ko: "홍" }, { en: "Ryu", ko: "류" }, { en: "Moon", ko: "문" }, { en: "Baek", ko: "백" }, { en: "Nam", ko: "남" }, { en: "Heo", ko: "허" }];
+const FIRST = [{ en: "Seo", ko: "서" }, { en: "Yeon", ko: "연" }, { en: "Hwa", ko: "화" }, { en: "Ji", ko: "지" }, { en: "Eun", ko: "은" }, { en: "Ha", ko: "하" }, { en: "Yul", ko: "율" }, { en: "Min", ko: "민" }, { en: "Do", ko: "도" }, { en: "Rin", ko: "린" }, { en: "Jae", ko: "재" }, { en: "Hwan", ko: "환" }, { en: "Gyeom", ko: "겸" }, { en: "Won", ko: "원" }, { en: "Bin", ko: "빈" }, { en: "Sol", ko: "솔" }, { en: "Yeo", ko: "여" }, { en: "Dam", ko: "담" }, { en: "I", ko: "이" }, { en: "Hae", ko: "해" }];
+const LAST = [{ en: "Yun", ko: "윤" }, { en: "Hwa", ko: "화" }, { en: "Rin", ko: "린" }, { en: "Gyeom", ko: "겸" }, { en: "Woo", ko: "우" }, { en: "Jin", ko: "진" }, { en: "Seo", ko: "서" }, { en: "Dam", ko: "담" }, { en: "Yeon", ko: "연" }, { en: "Ha", ko: "하" }, { en: "Won", ko: "원" }, { en: "Bin", ko: "빈" }, { en: "Sol", ko: "솔" }, { en: "Hyun", ko: "현" }, { en: "Rok", ko: "록" }, { en: "I", ko: "이" }, { en: "Wol", ko: "월" }, { en: "Gyeong", ko: "경" }, { en: "An", ko: "안" }, { en: "Hee", ko: "희" }];
 
 const startBtn = document.getElementById("start-btn");
-const retryBtn = document.getElementById("retry-btn");
-const shareBtn = document.getElementById("share-btn");
+if (!startBtn) {
+  document.addEventListener("languageChanged", (e) => applyStaticPageText(e.detail.lang));
+} else {
+  initTestPage();
+}
 
-const questionTitle = document.getElementById("question-title");
-const answerList = document.getElementById("answer-list");
-const progressText = document.getElementById("progress-text");
-const progressFill = document.getElementById("progress-fill");
-
-function showScreen(screen) {
-  [startScreen, quizScreen, resultScreen].forEach((el) => {
-    const isCurrent = el === screen;
-    el.classList.toggle("active", isCurrent);
-    el.setAttribute("aria-hidden", String(!isCurrent));
+function applyStaticPageText(lang) {
+  const map = window.i18n.translations[lang].pages[document.body.dataset.page];
+  if (!map) return;
+  document.querySelectorAll("[data-page-i18n]").forEach((el) => {
+    el.textContent = map[el.dataset.pageI18n] || el.textContent;
   });
 }
 
-function resetScores() {
-  RESULT_KEYS.forEach((key) => {
-    scores[key] = 0;
-  });
-}
+function initTestPage() {
+  let currentIndex = 0;
+  let answers = [];
+  let currentLang = localStorage.getItem("joseon-lang") || "en";
 
-function renderQuestion() {
-  const q = QUESTIONS[currentIndex];
-  questionTitle.textContent = q.question;
-  progressText.textContent = `${currentIndex + 1} / ${QUESTIONS.length}`;
-  progressFill.style.width = `${((currentIndex + 1) / QUESTIONS.length) * 100}%`;
+  const startScreen = document.getElementById("start-screen");
+  const quizScreen = document.getElementById("quiz-screen");
+  const resultScreen = document.getElementById("result-screen");
+  const retryBtn = document.getElementById("retry-btn");
+  const shareBtn = document.getElementById("share-btn");
+  const saveCardBtn = document.getElementById("save-card-btn");
 
-  answerList.innerHTML = "";
-  q.answers.forEach((answer) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "answer-btn";
-    button.textContent = answer.text;
-    button.addEventListener("click", () => onAnswer(answer.types));
-    answerList.appendChild(button);
-  });
-}
+  const questionTitle = document.getElementById("question-title");
+  const answerList = document.getElementById("answer-list");
+  const progressText = document.getElementById("progress-text");
+  const progressFill = document.getElementById("progress-fill");
 
-function onAnswer(types) {
-  types.forEach((type, idx) => {
-    scores[type] += idx === 0 ? 3 : 2;
-  });
+  function showScreen(screen) {
+    [startScreen, quizScreen, resultScreen].forEach((el) => {
+      const on = el === screen;
+      el.classList.toggle("active", on);
+      el.setAttribute("aria-hidden", String(!on));
+    });
+  }
 
-  currentIndex += 1;
-  if (currentIndex < QUESTIONS.length) {
+  function hashFromAnswers(extra = 0) {
+    let h = answers.reduce((acc, v, i) => (acc * 31 + (v + 1) * (i + 7)) % 2147483647, 17);
+    h = (h + extra * 1013) % 2147483647;
+    return h;
+  }
+
+  function pick(arr, seed, step) {
+    return arr[(seed + step * 97) % arr.length];
+  }
+
+  function buildResult() {
+    const seed = hashFromAnswers(Number(localStorage.getItem("joseon-retake") || 0));
+    const archetype = ARCHETYPES[seed % ARCHETYPES.length];
+    const name = {
+      surname: pick(SURNAMES, seed, 1),
+      first: pick(FIRST, seed, 2),
+      last: pick(LAST, seed, 3),
+    };
+    const role = currentLang === "ko" ? archetype.roleKo : archetype.roleEn;
+    const result = {
+      key: seed % ARCHETYPES.length,
+      title: currentLang === "ko" ? archetype.ko : archetype.en,
+      oppositeTitle: currentLang === "ko" ? archetype.en : archetype.ko,
+      nameEn: `${name.surname.en} ${name.first.en}-${name.last.en}`,
+      nameKo: `${name.surname.ko}${name.first.ko}${name.last.ko}`,
+      era: pick(POOLS.era[currentLang], seed, 4),
+      region: pick(POOLS.region[currentLang], seed, 5),
+      role,
+      object: pick(POOLS.object[currentLang], seed, 6),
+      talent: pick(POOLS.talent[currentLang], seed, 7),
+      fear: pick(POOLS.fear[currentLang], seed, 8),
+      keywords: currentLang === "ko" ? "관찰, 통찰, 책임, 상상력" : "Observation, strategy, empathy, resilience",
+      motto: currentLang === "ko" ? "이름보다 선택이 오래 남는다." : "Your choices outlive your name.",
+      power: currentLang === "ko" ? "권력에 가까웠지만, 권력보다 사람을 먼저 보았습니다." : "You stood near power, but chose people over status.",
+      summary: currentLang === "ko" ? "당신의 전생은 요란하지 않았지만 결코 의미 없지 않았습니다." : "Your past life in Joseon was never loud, but never meaningless.",
+      description: currentLang === "ko" ? "당신은 남들이 놓치는 작은 신호를 읽던 사람이었습니다. 누군가는 칼과 직함으로 세상을 바꾸려 했지만, 당신은 표정과 문장, 침묵 속에서 방향을 찾아냈습니다.\n\n공식 기록 한 줄에 이름이 남지 않아도, 누군가의 운명을 조용히 바꿔 놓았을 가능성이 큽니다." : "You were the kind of person who noticed what others ignored. While others chased rank and display, you read patterns in speech, silence, and hesitation.\n\nYou may not have stood in the center of official records, but your judgment likely changed the fate of people more powerful than you.",
+      why: currentLang === "ko" ? "당신의 답변은 직접 충돌보다 관찰, 전략, 분위기 조율을 중시하는 경향을 보여줍니다." : "Your choices suggest you value observation, strategy, and subtle influence over loud confrontation.",
+      ending: currentLang === "ko" ? "눈 내리던 밤, 당신은 나무 마루 밑에 마지막 메모를 숨겼습니다. 이름은 사라졌지만 그 문장 덕분에 누군가는 살아남았습니다." : "On a snowy night, you left one final note beneath a wooden floorboard. Your name faded, but someone survived because of your words.",
+      today: currentLang === "ko" ? "지금 다시 태어난다면, 누구보다 먼저 상황의 공기를 읽고 팀의 방향을 잡는 사람일 것입니다." : "If you lived today, you would be the one who reads the room first and quietly redirects outcomes.",
+      stats: {
+        [currentLang === "ko" ? "지략" : "Strategy"]: 60 + (seed % 36),
+        [currentLang === "ko" ? "공감" : "Empathy"]: 60 + ((seed >> 2) % 36),
+        [currentLang === "ko" ? "실행력" : "Action"]: 60 + ((seed >> 4) % 36),
+        [currentLang === "ko" ? "예술감각" : "Artistry"]: 60 + ((seed >> 6) % 36),
+        [currentLang === "ko" ? "생존력" : "Survival"]: 60 + ((seed >> 8) % 36),
+      },
+    };
+    localStorage.setItem("joseon-last-result", JSON.stringify({ answers, result, lang: currentLang }));
+    return result;
+  }
+
+  function renderQuestion() {
+    const q = QUESTIONS[currentLang][currentIndex];
+    questionTitle.textContent = q.q;
+    progressText.textContent = `${currentIndex + 1} / ${QUESTIONS[currentLang].length}`;
+    progressFill.style.width = `${((currentIndex + 1) / QUESTIONS[currentLang].length) * 100}%`;
+    answerList.innerHTML = "";
+    q.a.forEach((text, idx) => {
+      const b = document.createElement("button");
+      b.className = "answer-btn";
+      b.textContent = text;
+      b.addEventListener("click", () => onAnswer(idx));
+      answerList.appendChild(b);
+    });
+  }
+
+  function renderStats(stats) {
+    const statsList = document.getElementById("stats-list");
+    statsList.innerHTML = "";
+    Object.entries(stats).forEach(([name, value]) => {
+      const row = document.createElement("div");
+      row.className = "stat-row";
+      row.innerHTML = `<div class="stat-meta"><span>${name}</span><strong>${value}</strong></div><div class="stat-track"><div class="stat-fill" style="width:${value}%"></div></div>`;
+      statsList.appendChild(row);
+    });
+  }
+
+  function renderResult(result) {
+    document.getElementById("result-title").textContent = result.title;
+    document.getElementById("result-identity").textContent = currentLang === "ko" ? `Archetype: ${result.oppositeTitle}` : `한국어 결과명: ${result.oppositeTitle}`;
+    document.getElementById("result-name").textContent = currentLang === "ko" ? result.nameKo : result.nameEn;
+    document.getElementById("result-era").textContent = result.era;
+    document.getElementById("result-place").textContent = result.region;
+    document.getElementById("result-job").textContent = result.role;
+    document.getElementById("result-object").textContent = result.object;
+    document.getElementById("result-keywords").textContent = result.keywords;
+    document.getElementById("result-talent").textContent = result.talent;
+    document.getElementById("result-fear").textContent = result.fear;
+    document.getElementById("result-motto").textContent = result.motto;
+    document.getElementById("result-power").textContent = result.power;
+    document.getElementById("result-summary").textContent = result.summary;
+    document.getElementById("result-description").textContent = result.description;
+    document.getElementById("result-why").textContent = result.why;
+    document.getElementById("result-ending").textContent = result.ending;
+    document.getElementById("result-today").textContent = result.today;
+    renderStats(result.stats);
+  }
+
+  function onAnswer(idx) {
+    answers.push(idx);
+    currentIndex += 1;
+    if (currentIndex < QUESTIONS[currentLang].length) return renderQuestion();
+    renderResult(buildResult());
+    showScreen(resultScreen);
+  }
+
+  function startQuiz() {
+    currentIndex = 0;
+    answers = [];
+    showScreen(quizScreen);
     renderQuestion();
-    return;
   }
 
-  const result = calculateResult();
-  renderResult(result);
-  showScreen(resultScreen);
-}
+  function restartQuiz() {
+    localStorage.setItem("joseon-retake", String((Number(localStorage.getItem("joseon-retake") || 0) + 1) % 9999));
+    showScreen(startScreen);
+  }
 
-function calculateResult() {
-  return RESULT_KEYS.reduce((best, key) => {
-    if (scores[key] > scores[best]) return key;
-    return best;
-  }, RESULT_KEYS[0]);
-}
-
-function renderStats(stats) {
-  const statsList = document.getElementById("stats-list");
-  statsList.innerHTML = "";
-
-  Object.entries(stats).forEach(([name, value]) => {
-    const row = document.createElement("div");
-    row.className = "stat-row";
-    row.innerHTML = `
-      <div class="stat-meta"><span>${name}</span><strong>${value}</strong></div>
-      <div class="stat-track"><div class="stat-fill" style="width:${value}%"></div></div>
-    `;
-    statsList.appendChild(row);
-  });
-}
-
-function renderResult(resultKey) {
-  const result = RESULTS[resultKey];
-
-  document.getElementById("result-title").textContent = result.title;
-  document.getElementById("result-identity").textContent = `전생 이름: ${result.pastName}`;
-  document.getElementById("result-era").textContent = result.era;
-  document.getElementById("result-place").textContent = result.place;
-  document.getElementById("result-job").textContent = result.job;
-  document.getElementById("result-keywords").textContent = result.keywords;
-  document.getElementById("result-description").textContent = result.description;
-  document.getElementById("result-ending").textContent = result.ending;
-  renderStats(result.stats);
-
-  shareBtn.dataset.result = `${result.title} | 전생 이름 ${result.pastName}`;
-}
-
-function restartQuiz() {
-  currentIndex = 0;
-  resetScores();
-  showScreen(startScreen);
-}
-
-function startQuiz() {
-  currentIndex = 0;
-  resetScores();
-  showScreen(quizScreen);
-  renderQuestion();
-}
-
-async function shareResult() {
-  const text = `🕯️ 나의 조선 전생 결과: ${shareBtn.dataset.result}\n${location.href}`;
-
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: "내가 전생에 조선인이었다니",
-        text,
-      });
-      return;
-    } catch (error) {
-      // 사용자가 공유를 취소한 경우 등: 아래 복사로 폴백
+  async function shareResult() {
+    const saved = JSON.parse(localStorage.getItem("joseon-last-result") || "{}").result;
+    if (!saved) return;
+    const text = currentLang === "ko" ? `나는 전생에 ${saved.title}이었다… 너는 조선에서 누구였을까? (${saved.nameKo})` : `I discovered my past life in Joseon: ${saved.title}. Who were you in Joseon? (${saved.nameEn})`;
+    const payload = `${text}\n${location.href}`;
+    if (navigator.share) {
+      try { await navigator.share({ title: document.title, text: payload }); return; } catch (e) {}
     }
+    try { await navigator.clipboard.writeText(payload); alert(window.i18n.translations[currentLang].result.copied); } catch (e) { alert(window.i18n.translations[currentLang].result.copiedFail); }
   }
 
-  try {
-    await navigator.clipboard.writeText(text);
-    alert("결과가 클립보드에 복사되었어요!");
-  } catch (error) {
-    alert("공유 기능을 사용할 수 없어 링크를 직접 복사해 주세요.");
+  function saveCard() {
+    const saved = JSON.parse(localStorage.getItem("joseon-last-result") || "{}").result;
+    if (!saved) return;
+    const c = document.createElement("canvas");
+    c.width = 1080; c.height = 1920;
+    const x = c.getContext("2d");
+    x.fillStyle = "#f7f2e6"; x.fillRect(0, 0, c.width, c.height);
+    x.fillStyle = "#11243d"; x.font = "700 56px Inter";
+    x.fillText(currentLang === "ko" ? "내가 전생에 조선인이었다니" : "My Past Life in Joseon", 72, 140);
+    x.font = "700 64px Inter"; x.fillStyle = "#8e1f2d"; x.fillText(saved.title, 72, 260);
+    x.font = "500 42px Inter"; x.fillStyle = "#151515";
+    x.fillText(currentLang === "ko" ? saved.nameKo : saved.nameEn, 72, 340);
+    x.font = "500 36px Inter";
+    [saved.era, saved.region, saved.role, saved.summary].forEach((line, i) => x.fillText(line, 72, 440 + i * 72));
+    let y = 800;
+    Object.entries(saved.stats).forEach(([k, v]) => { x.fillText(`${k}: ${v}`, 72, y); y += 60; });
+    const a = document.createElement("a");
+    a.href = c.toDataURL("image/png");
+    a.download = `joseon-result-${Date.now()}.png`;
+    a.click();
+    alert(window.i18n.translations[currentLang].result.saved);
   }
-}
 
-startBtn.addEventListener("click", startQuiz);
+  document.addEventListener("languageChanged", (e) => {
+    currentLang = e.detail.lang;
+    if (quizScreen.classList.contains("active")) renderQuestion();
+    if (resultScreen.classList.contains("active") && answers.length === QUESTIONS[currentLang].length) {
+      renderResult(buildResult());
+    }
+  });
 
-retryBtn.addEventListener("click", restartQuiz);
-shareBtn.addEventListener("click", shareResult);
+  startBtn.addEventListener("click", startQuiz);
+  retryBtn.addEventListener("click", restartQuiz);
+  shareBtn.addEventListener("click", shareResult);
+  saveCardBtn.addEventListener("click", saveCard);
 
-const params = new URLSearchParams(window.location.search);
-if (params.get("start") === "1") {
-  startQuiz();
+  const saved = JSON.parse(localStorage.getItem("joseon-last-result") || "{}");
+  if (saved.result) {
+    answers = saved.answers || [];
+    currentLang = localStorage.getItem("joseon-lang") || saved.lang || "en";
+    renderResult(saved.result);
+    showScreen(resultScreen);
+  }
+  if (new URLSearchParams(location.search).get("start") === "1" && !saved.result) startQuiz();
 }
