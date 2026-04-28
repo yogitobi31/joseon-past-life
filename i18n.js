@@ -18,7 +18,7 @@ const translations = {
     },
     result: {
       name: "Joseon Name", era: "Era", region: "Region", role: "Social Role", object: "Symbolic Object", keywords: "Keywords", talent: "Hidden Talent", fear: "Greatest Fear", motto: "Life Motto", power: "Relationship with Power", stats: "Stats", summary: "Summary", why: "Why this result fits you", finalScene: "Your final scene in Joseon", today: "If you lived today",
-      copied: "Copied to clipboard!", copiedFail: "Could not copy. Please copy the link manually.", saved: "Result card saved.",
+      copied: "Copied to clipboard!", copiedFail: "Could not copy. Please copy the link manually.", saved: "Result card saved.", preparing: "Preparing your card...", saveFail: "Could not save the card. Please try again.", cardFooter: "Who were you in Joseon?",
     },
     pages: {
       history: {
@@ -83,7 +83,7 @@ const translations = {
     },
     result: {
       name: "전생 이름", era: "시대", region: "거주지", role: "역할", object: "상징 물건", keywords: "성향 키워드", talent: "숨겨진 재능", fear: "가장 큰 두려움", motto: "좌우명", power: "권력과의 관계", stats: "능력치", summary: "요약", why: "왜 이 결과가 나왔을까?", finalScene: "전생의 마지막 장면", today: "현대에 다시 태어난다면",
-      copied: "클립보드에 복사했어요!", copiedFail: "복사에 실패했어요. 링크를 직접 복사해 주세요.", saved: "결과 카드를 저장했어요.",
+      copied: "클립보드에 복사했어요!", copiedFail: "복사에 실패했어요. 링크를 직접 복사해 주세요.", saved: "결과 카드를 저장했어요.", preparing: "카드를 준비하는 중...", saveFail: "카드 저장에 실패했어요. 다시 시도해 주세요.", cardFooter: "너는 조선에서 누구였을까?",
     },
     pages: {
       history: {

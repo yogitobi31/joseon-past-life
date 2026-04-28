@@ -115,8 +115,57 @@
             <button id="save-card-btn" class="btn btn-secondary" data-i18n="test.saveCard"></button>
             <button id="share-btn" class="btn btn-primary" data-i18n="test.share"></button>
           </div>
+          <p id="save-card-status" class="save-card-status" aria-live="polite"></p>
         </section>
       </main>
+
+      <section id="share-card-export" class="share-card-export" aria-hidden="true">
+        <article id="share-card" class="share-card" role="presentation">
+          <div class="share-card-paper"></div>
+          <header class="share-top">
+            <p id="share-brand" class="share-brand"></p>
+            <div class="share-seal" aria-hidden="true"><span>印</span></div>
+          </header>
+
+          <section class="share-hero">
+            <h2 id="share-title" class="share-title"></h2>
+            <p id="share-name" class="share-name"></p>
+            <div id="share-meta" class="share-meta"></div>
+          </section>
+
+          <section class="share-summary-section">
+            <h3 id="share-summary-label" class="share-section-label"></h3>
+            <p id="share-summary" class="share-summary"></p>
+          </section>
+
+          <section class="share-traits-section">
+            <div>
+              <h3 id="share-keywords-label" class="share-section-label"></h3>
+              <div id="share-keywords" class="share-keywords"></div>
+            </div>
+            <div class="share-trait-grid">
+              <div class="share-trait-item">
+                <h4 id="share-object-label"></h4>
+                <p id="share-object"></p>
+              </div>
+              <div class="share-trait-item">
+                <h4 id="share-motto-label"></h4>
+                <p id="share-motto"></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="share-stats-section">
+            <h3 id="share-stats-label" class="share-section-label"></h3>
+            <div id="share-stats" class="share-stats"></div>
+          </section>
+
+          <footer class="share-footer">
+            <p id="share-footer-line"></p>
+            <p class="share-site">joseon-past-life</p>
+          </footer>
+        </article>
+      </section>
 
       <footer class="site-footer">
         <div class="footer-links" aria-label="Footer links">
@@ -131,6 +180,7 @@
     </div>
 
     <script src="i18n.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
