@@ -365,6 +365,13 @@ function restartQuiz() {
   showScreen(startScreen);
 }
 
+function startQuiz() {
+  currentIndex = 0;
+  resetScores();
+  showScreen(quizScreen);
+  renderQuestion();
+}
+
 async function shareResult() {
   const text = `🕯️ 나의 조선 전생 결과: ${shareBtn.dataset.result}\n${location.href}`;
 
@@ -388,12 +395,12 @@ async function shareResult() {
   }
 }
 
-startBtn.addEventListener("click", () => {
-  currentIndex = 0;
-  resetScores();
-  showScreen(quizScreen);
-  renderQuestion();
-});
+startBtn.addEventListener("click", startQuiz);
 
 retryBtn.addEventListener("click", restartQuiz);
 shareBtn.addEventListener("click", shareResult);
+
+const params = new URLSearchParams(window.location.search);
+if (params.get("start") === "1") {
+  startQuiz();
+}

@@ -3,11 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>내가 전생에 조선인이었다니</title>
+    <title>내가 전생에 조선인이었다니 - 조선시대 전생 성향 테스트</title>
     <meta
       name="description"
-      content="12문항 심리테스트로 알아보는 조선시대 전생 캐릭터. 모바일 중심의 감성 테스트 웹서비스"
+      content="지금의 선택으로 조선시대의 전생 캐릭터를 확인해보는 한국형 심리테스트입니다."
     />
+    <meta property="og:title" content="내가 전생에 조선인이었다니 - 조선시대 전생 성향 테스트" />
+    <meta
+      property="og:description"
+      content="12개 질문으로 나의 조선 전생 캐릭터를 확인하는 한국형 성향 테스트"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://your-project-name.vercel.app/" />
+    <meta property="og:image" content="/og-placeholder.png" />
+    <!-- OG URL/이미지는 실제 배포 주소 및 이미지 준비 후 수정 -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,79 +29,104 @@
   <body>
     <div class="paper-overlay"></div>
 
-    <main class="app" aria-live="polite">
-      <section id="start-screen" class="screen active">
-        <p class="badge">모바일 심리 테스트</p>
-        <h1>내가 전생에<br />조선인이었다니</h1>
-        <p class="lead">
-          12개의 질문에 답하면, 당신의 조선 전생 캐릭터와 마지막 장면을 알려드립니다.
-        </p>
-        <button id="start-btn" class="btn btn-primary">테스트 시작하기</button>
-      </section>
+    <div class="site-shell">
+      <nav class="site-nav" aria-label="상단 메뉴">
+        <a class="nav-link" href="index.html">테스트</a>
+        <a class="nav-link" href="results.html">결과 유형</a>
+        <a class="nav-link" href="history.html">이야기</a>
+        <a class="nav-link" href="about.html">소개</a>
+      </nav>
 
-      <section id="quiz-screen" class="screen" aria-hidden="true">
-        <div class="top-bar">
-          <p id="progress-text">1 / 12</p>
-          <div class="progress-track" aria-hidden="true">
-            <div id="progress-fill" class="progress-fill"></div>
+      <main class="app" aria-live="polite">
+        <section id="start-screen" class="screen active">
+          <p class="badge">모바일 심리 테스트</p>
+          <h1>내가 전생에<br />조선인이었다니</h1>
+          <p class="lead">
+            12개의 질문에 답하면, 당신의 조선 전생 캐릭터와 마지막 장면을 알려드립니다.
+          </p>
+          <button id="start-btn" class="btn btn-primary">테스트 시작하기</button>
+        </section>
+
+        <section id="quiz-screen" class="screen" aria-hidden="true">
+          <div class="top-bar">
+            <p id="progress-text">1 / 12</p>
+            <div class="progress-track" aria-hidden="true">
+              <div id="progress-fill" class="progress-fill"></div>
+            </div>
           </div>
+
+          <article class="question-card">
+            <h2 id="question-title"></h2>
+            <div id="answer-list" class="answer-list"></div>
+          </article>
+        </section>
+
+        <section id="result-screen" class="screen" aria-hidden="true">
+          <header class="result-header">
+            <p class="result-label">당신의 조선 전생</p>
+            <h2 id="result-title"></h2>
+            <p id="result-identity" class="result-identity"></p>
+          </header>
+
+          <!-- AdSense placeholder: result page top banner -->
+
+          <div class="result-card">
+            <dl class="fact-grid">
+              <div>
+                <dt>시대</dt>
+                <dd id="result-era"></dd>
+              </div>
+              <div>
+                <dt>거주지</dt>
+                <dd id="result-place"></dd>
+              </div>
+              <div>
+                <dt>직업</dt>
+                <dd id="result-job"></dd>
+              </div>
+              <div>
+                <dt>성향 키워드</dt>
+                <dd id="result-keywords"></dd>
+              </div>
+            </dl>
+
+            <section class="stats">
+              <h3>능력치</h3>
+              <div id="stats-list" class="stats-list"></div>
+            </section>
+
+            <section>
+              <h3>전생 기록</h3>
+              <p id="result-description"></p>
+            </section>
+
+            <section class="last-scene">
+              <h3>전생의 마지막 장면</h3>
+              <p id="result-ending"></p>
+            </section>
+          </div>
+
+          <div class="result-actions">
+            <button id="retry-btn" class="btn btn-secondary">다시하기</button>
+            <button id="share-btn" class="btn btn-primary">결과 공유하기</button>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-links" aria-label="하단 링크">
+          <a href="index.html">홈</a>
+          <a href="index.html">테스트 시작</a>
+          <a href="results.html">결과 유형</a>
+          <a href="history.html">조선시대 이야기</a>
+          <a href="about.html">소개</a>
+          <a href="privacy.html">개인정보처리방침</a>
+          <a href="contact.html">문의</a>
         </div>
-
-        <article class="question-card">
-          <h2 id="question-title"></h2>
-          <div id="answer-list" class="answer-list"></div>
-        </article>
-      </section>
-
-      <section id="result-screen" class="screen" aria-hidden="true">
-        <header class="result-header">
-          <p class="result-label">당신의 조선 전생</p>
-          <h2 id="result-title"></h2>
-          <p id="result-identity" class="result-identity"></p>
-        </header>
-
-        <div class="result-card">
-          <dl class="fact-grid">
-            <div>
-              <dt>시대</dt>
-              <dd id="result-era"></dd>
-            </div>
-            <div>
-              <dt>거주지</dt>
-              <dd id="result-place"></dd>
-            </div>
-            <div>
-              <dt>직업</dt>
-              <dd id="result-job"></dd>
-            </div>
-            <div>
-              <dt>성향 키워드</dt>
-              <dd id="result-keywords"></dd>
-            </div>
-          </dl>
-
-          <section class="stats">
-            <h3>능력치</h3>
-            <div id="stats-list" class="stats-list"></div>
-          </section>
-
-          <section>
-            <h3>전생 기록</h3>
-            <p id="result-description"></p>
-          </section>
-
-          <section class="last-scene">
-            <h3>전생의 마지막 장면</h3>
-            <p id="result-ending"></p>
-          </section>
-        </div>
-
-        <div class="result-actions">
-          <button id="retry-btn" class="btn btn-secondary">다시하기</button>
-          <button id="share-btn" class="btn btn-primary">결과 공유하기</button>
-        </div>
-      </section>
-    </main>
+        <p class="footer-note">이 사이트는 역사적 상상력을 바탕으로 만든 성향 테스트 콘텐츠입니다.</p>
+        <!-- AdSense placeholder: footer banner -->
+      </footer>
+    </div>
 
     <script src="script.js"></script>
   </body>
