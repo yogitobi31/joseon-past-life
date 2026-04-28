@@ -82,6 +82,7 @@ function initTestPage() {
   const retryBtn = document.getElementById("retry-btn");
   const shareBtn = document.getElementById("share-btn");
   const saveCardBtn = document.getElementById("save-card-btn");
+  const saveCardStatus = document.getElementById("save-card-status");
 
   const questionTitle = document.getElementById("question-title");
   const answerList = document.getElementById("answer-list");
@@ -173,6 +174,74 @@ function initTestPage() {
     });
   }
 
+  function toSummaryForCard(result) {
+    const base = [result.summary, result.why].filter(Boolean).join(" ");
+    const compact = base.replace(/\s+/g, " ").trim();
+    return compact.length > 220 ? `${compact.slice(0, 217).trimEnd()}…` : compact;
+  }
+
+  function splitKeywords(result) {
+    return result.keywords
+      .split(",")
+      .map((v) => v.trim())
+      .filter(Boolean)
+      .slice(0, 3);
+  }
+
+  function renderShareCard(result) {
+    const t = window.i18n.translations[currentLang];
+    const cardTitle = document.getElementById("share-title");
+    const titleLength = result.title.length;
+    cardTitle.classList.toggle("long", titleLength > 38 && titleLength <= 54);
+    cardTitle.classList.toggle("very-long", titleLength > 54);
+    cardTitle.textContent = result.title;
+
+    document.getElementById("share-brand").textContent = currentLang === "ko" ? "내가 전생에 조선인이었다니" : "My Past Life in Joseon";
+    document.getElementById("share-name").textContent = currentLang === "ko" ? result.nameKo : result.nameEn;
+    document.getElementById("share-summary-label").textContent = t.result.summary;
+    document.getElementById("share-summary").textContent = toSummaryForCard(result);
+    document.getElementById("share-keywords-label").textContent = t.result.keywords;
+    document.getElementById("share-object-label").textContent = t.result.object;
+    document.getElementById("share-object").textContent = result.object;
+    document.getElementById("share-motto-label").textContent = t.result.motto;
+    document.getElementById("share-motto").textContent = result.motto;
+    document.getElementById("share-stats-label").textContent = t.result.stats;
+    const footerLine = document.getElementById("share-footer-line");
+    footerLine.className = "share-footer-line";
+    footerLine.textContent = t.result.cardFooter;
+
+    const meta = document.getElementById("share-meta");
+    meta.innerHTML = "";
+    [
+      [t.result.era, result.era],
+      [t.result.region, result.region],
+      [t.result.role, result.role],
+    ].forEach(([label, value]) => {
+      const item = document.createElement("div");
+      item.className = "share-meta-item";
+      item.innerHTML = `<h4>${label}</h4><p>${value}</p>`;
+      meta.appendChild(item);
+    });
+
+    const keywords = document.getElementById("share-keywords");
+    keywords.innerHTML = "";
+    splitKeywords(result).forEach((keyword) => {
+      const pill = document.createElement("span");
+      pill.className = "share-keyword-pill";
+      pill.textContent = keyword;
+      keywords.appendChild(pill);
+    });
+
+    const stats = document.getElementById("share-stats");
+    stats.innerHTML = "";
+    Object.entries(result.stats).slice(0, 5).forEach(([name, value]) => {
+      const row = document.createElement("div");
+      row.className = "share-stat-row";
+      row.innerHTML = `<strong>${name}</strong><div class="share-stat-track"><div class="share-stat-fill" style="width:${value}%"></div></div><span class="share-stat-value">${value}</span>`;
+      stats.appendChild(row);
+    });
+  }
+
   function renderResult(result) {
     document.getElementById("result-title").textContent = result.title;
     document.getElementById("result-identity").textContent = currentLang === "ko" ? `Archetype: ${result.oppositeTitle}` : `한국어 결과명: ${result.oppositeTitle}`;
@@ -192,6 +261,7 @@ function initTestPage() {
     document.getElementById("result-ending").textContent = result.ending;
     document.getElementById("result-today").textContent = result.today;
     renderStats(result.stats);
+    renderShareCard(result);
   }
 
   function onAnswer(idx) {
@@ -225,27 +295,44 @@ function initTestPage() {
     try { await navigator.clipboard.writeText(payload); alert(window.i18n.translations[currentLang].result.copied); } catch (e) { alert(window.i18n.translations[currentLang].result.copiedFail); }
   }
 
-  function saveCard() {
+  async function saveCard() {
     const saved = JSON.parse(localStorage.getItem("joseon-last-result") || "{}").result;
     if (!saved) return;
-    const c = document.createElement("canvas");
-    c.width = 1080; c.height = 1920;
-    const x = c.getContext("2d");
-    x.fillStyle = "#f7f2e6"; x.fillRect(0, 0, c.width, c.height);
-    x.fillStyle = "#11243d"; x.font = "700 56px Inter";
-    x.fillText(currentLang === "ko" ? "내가 전생에 조선인이었다니" : "My Past Life in Joseon", 72, 140);
-    x.font = "700 64px Inter"; x.fillStyle = "#8e1f2d"; x.fillText(saved.title, 72, 260);
-    x.font = "500 42px Inter"; x.fillStyle = "#151515";
-    x.fillText(currentLang === "ko" ? saved.nameKo : saved.nameEn, 72, 340);
-    x.font = "500 36px Inter";
-    [saved.era, saved.region, saved.role, saved.summary].forEach((line, i) => x.fillText(line, 72, 440 + i * 72));
-    let y = 800;
-    Object.entries(saved.stats).forEach(([k, v]) => { x.fillText(`${k}: ${v}`, 72, y); y += 60; });
-    const a = document.createElement("a");
-    a.href = c.toDataURL("image/png");
-    a.download = `joseon-result-${Date.now()}.png`;
-    a.click();
-    alert(window.i18n.translations[currentLang].result.saved);
+    const t = window.i18n.translations[currentLang].result;
+    try {
+      renderShareCard(saved);
+      saveCardBtn.disabled = true;
+      saveCardBtn.classList.add("is-loading");
+      saveCardStatus.textContent = t.preparing;
+      if (document.fonts?.ready) await document.fonts.ready;
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      const card = document.getElementById("share-card");
+      const rect = card.getBoundingClientRect();
+      const canvas = await html2canvas(card, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#f4ecdd",
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: Math.round(rect.width),
+        windowHeight: Math.round(rect.height),
+      });
+      const a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = "joseon-past-life-result.png";
+      a.click();
+      saveCardStatus.textContent = t.saved;
+    } catch (e) {
+      saveCardStatus.textContent = t.saveFail;
+    } finally {
+      saveCardBtn.disabled = false;
+      saveCardBtn.classList.remove("is-loading");
+      setTimeout(() => {
+        saveCardStatus.textContent = "";
+      }, 2600);
+    }
   }
 
   document.addEventListener("languageChanged", (e) => {
