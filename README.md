@@ -14,7 +14,6 @@ Bilingual (English default + Korean toggle) static personality test inspired by 
 - `/history.html`: Joseon stories (EN/KR)
 - `/about.html`: service explanation (EN/KR)
 - `/privacy.html`: privacy policy (EN/KR)
-- `/contact.html`: contact (EN/KR)
 
 ## Data edit points
 - UI/page text and translations: `i18n.js`
