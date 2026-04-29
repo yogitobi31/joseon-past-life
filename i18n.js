@@ -4,7 +4,7 @@ const translations = {
       title: "My Past Life in Joseon - Korean Past Life Personality Test",
       description: "Discover who you might have been in the Joseon Dynasty through a Korean-inspired personality test.",
     },
-    menu: { test: "Test", stories: "Joseon Stories", about: "About", privacy: "Privacy", contact: "Contact" },
+    menu: { test: "Test", stories: "Joseon Stories", about: "About", privacy: "Privacy" },
     footer: { note: "This site is a personality entertainment experience inspired by Joseon-era storytelling." },
     test: {
       badge: "Korean-inspired personality test",
@@ -56,12 +56,6 @@ const translations = {
         p3: "Language preference and last result can be stored in localStorage for convenience.",
         p4: "If ad services are added later, this page will be updated with cookie-related disclosures.",
       },
-      contact: {
-        badge: "Contact",
-        title: "Contact",
-        p1: "You can send feedback, bug reports, content suggestions, or collaboration inquiries.",
-        p2: "Contact email:",
-      },
     },
   },
   ko: {
@@ -69,7 +63,7 @@ const translations = {
       title: "내가 전생에 조선인이었다니 - 조선시대 전생 성향 테스트",
       description: "지금의 선택으로 조선시대의 전생 캐릭터를 확인해보세요.",
     },
-    menu: { test: "테스트", stories: "조선 이야기", about: "소개", privacy: "개인정보처리방침", contact: "문의" },
+    menu: { test: "테스트", stories: "조선 이야기", about: "소개", privacy: "개인정보처리방침" },
     footer: { note: "이 사이트는 조선시대 분위기에서 영감을 받은 성향 기반 엔터테인먼트 테스트입니다." },
     test: {
       badge: "한국 문화 영감 성향 테스트",
@@ -120,12 +114,6 @@ const translations = {
         p2: "답변 데이터는 브라우저 안에서 결과 생성용으로만 처리되며 서버로 전송되지 않습니다.",
         p3: "편의를 위해 언어 설정과 마지막 결과를 localStorage에 저장할 수 있습니다.",
         p4: "향후 광고 서비스가 도입되면 쿠키 안내를 이 페이지에 업데이트하겠습니다.",
-      },
-      contact: {
-        badge: "문의",
-        title: "문의",
-        p1: "오류 제보, 개선 제안, 협업 문의를 보내실 수 있습니다.",
-        p2: "문의 이메일:",
       },
     },
   },
